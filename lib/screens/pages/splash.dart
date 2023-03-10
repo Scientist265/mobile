@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mobile/constants/constant.dart';
 import 'package:mobile/screens/pages/onboarding.dart';
 import 'package:mobile/utils/bottom_bar.dart';
@@ -12,13 +13,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final box = GetStorage();
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () {
-      Get.to(() => const OnboardingScreen(),
-          transition: Transition.cupertinoDialog, duration: const Duration(seconds: 7));
-    });
+    checkLoggedIn();
+  }
+
+  checkLoggedIn() {
+    if (box.hasData('email')) {
+      Get.offAll(() => const BottomBar());
+    } else {
+      Future.delayed(const Duration(seconds: 5), () {
+        Get.to(() => const OnboardingScreen(),
+            transition: Transition.cupertinoDialog,
+            duration: const Duration(seconds: 7));
+      });
+    }
   }
 
   @override

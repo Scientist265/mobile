@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mobile/constants/constant.dart';
 import 'package:mobile/screens/auth_screens/login_page.dart';
 import 'package:mobile/screens/pages/prel_login_page.dart';
@@ -31,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   //  check2 = false, check3 = false, check4 = false, check5=false;
   String? option;
   String? urSchool;
+
   @override
   Widget build(BuildContext context) {
     List<ListTileOptions> schools = [
@@ -332,8 +334,13 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({super.key});
+  UserProfile({super.key});
+  getName(String text) {
+    var arr = text.split('@');
+    return arr[0];
+  }
 
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     SignUpScreen? signUp;
@@ -376,15 +383,15 @@ class UserProfile extends StatelessWidget {
         const SizedBox(
           height: 40,
         ),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Ibraheem Omowumi',
+              '${getName(box.read('email'))}',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(
@@ -437,7 +444,8 @@ class UserProfile extends StatelessWidget {
             ProfileListTile(
               icon: const Icon(Icons.logout),
               onpress: () {
-                Get.to(() => const LogInScreen(),
+                box.remove('email');
+                Get.offAll(() => const LogInScreen(),
                     transition: Transition.leftToRight,
                     duration: const Duration(seconds: 3));
               },

@@ -22,7 +22,7 @@ class _BottomBarState extends State<BottomBar> {
     List<Widget> widgetOptions = [
       const HomePage(),
       const SearchPage(),
-      const UserProfile(),
+       UserProfile(),
     ];
 
     void onTappedItem(int index) {
