@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:mobile/question_model/schools.dart';
 import 'package:mobile/screens/pages/notifications.dart';
@@ -26,6 +27,12 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  final box = GetStorage();
+  getName(String text) {
+    var arr = text.split('@');
+    return arr[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     Future popDialog() => showDialog(
@@ -123,8 +130,8 @@ class _ResultPageState extends State<ResultPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Hi User,',
+                  Text(
+                    '${getName(box.read('email'))}',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

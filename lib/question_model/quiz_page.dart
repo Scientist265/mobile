@@ -23,22 +23,6 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   @override
   Widget build(BuildContext context) {
-    Object? getCareer(int score) {
-      if (48 == score && score <= 54) {
-        return yourCareer?.schoolName;
-        // ignore: dead_code
-        print(yourCareer?.mySchoolList[1]);
-      } else if (40 == score && score <= 47) {
-        return yourCareer?.schoolName;
-      } else if (31 == score && score <= 39) {
-        return yourCareer?.schoolName;
-      } else if (18 == score && score <= 30) {
-        return yourCareer?.schoolName;
-      }
-
-      return 'I am not getting any value';
-    }
-
     Widget _answerButton(Answer answer) {
       bool isLastQuestion = false;
       if (currentQuestionIndex == questionList.length - 1) {
@@ -61,6 +45,13 @@ class _QuizPageState extends State<QuizPage> {
               ]),
           child: ElevatedButton(
               style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.resolveWith(
+                    (states) {
+                      return states.contains(MaterialState.pressed)
+                          ? Colors.grey
+                          : Colors.white;
+                    },
+                  ),
                   backgroundColor: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.pressed)) {
                       return Colors.grey;

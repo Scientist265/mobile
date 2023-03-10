@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -12,6 +14,7 @@ import 'package:mobile/utils/custom_button.dart';
 import 'package:mobile/utils/custom_textfield.dart';
 import 'package:mobile/constants/validation.dart';
 import 'package:mobile/screens/auth_screens/sign_up_page.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ListTileOptions {
   final String text;
@@ -333,14 +336,31 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   UserProfile({super.key});
+
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  Uint8List? file;
   getName(String text) {
     var arr = text.split('@');
     return arr[0];
   }
 
+  getProfileImage() async {
+    final ImagePicker _picker = ImagePicker();
+    // Pick an image
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      file = await image.readAsBytes();
+    }
+  }
+
   final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     SignUpScreen? signUp;
@@ -362,17 +382,23 @@ class UserProfile extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
-            const Align(
-              alignment: Alignment(0, 2),
-              child: CircleAvatar(
-                foregroundColor: Colors.black,
-                radius: 65,
-                backgroundColor: Color(0xffff6b8d),
-                child: Padding(
-                  padding: EdgeInsets.all(4),
-                  child: CircleAvatar(
-                      radius: 65,
-                      backgroundImage: AssetImage('assets/images/my_pic.jpg')),
+            Align(
+              alignment: const Alignment(0, 2),
+              child: InkWell(
+                onTap: getProfileImage,
+                child: CircleAvatar(
+                  foregroundColor: Colors.black,
+                  radius: 65,
+                  backgroundColor: const Color(0xffff6b8d),
+                  child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: file == null
+                          ? const CircleAvatar(
+                              radius: 65,
+                              backgroundImage:
+                                  AssetImage('assets/images/my_pic.jpg'))
+                          : CircleAvatar(
+                              radius: 65, backgroundImage: MemoryImage(file!))),
                 ),
               ),
             )

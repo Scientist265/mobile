@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           );
-                          Future.delayed(const Duration(seconds: 8), () {
+                          Future.delayed(const Duration(seconds: 5), () {
                             Get.to(() => const QuizPage(),
                                 transition: Transition.zoom,
                                 duration: const Duration(seconds: 5));
